@@ -14,11 +14,8 @@ getRandomInteger(0, 3);
 
 const checkStrLength = (string = '', maxLength = 10) => {
   string = string.toString();
-  if (string.length > maxLength) {
-    return false;
-  }
-
-  return true;
+  const isLong = string.length <= maxLength;
+  return isLong;
 };
 
-checkStrLength('some value', 10);
+checkStrLength('some value', 11);
