@@ -2,12 +2,8 @@ const getRandomInteger = (min = 0, max = 1) => {
   min = +min;
   max = +max;
   const isWrongRange = min >= max || min < 0 || max < 0 || isNaN(min) || isNaN(max);
-
-  if (isWrongRange) {
-    return 'Неверно передан диапазон значений';
-  }
-
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  const randomInteger = Math.floor(Math.random() * (max - min + 1) + min);
+  return isWrongRange ? 'Неверно передан диапазон значений' : randomInteger;
 };
 
 getRandomInteger(0, 3);
