@@ -32,7 +32,7 @@ const names = ['Артем', 'Филипп', 'Яна', 'Анастасия'];
 
 function foo (number) {
   const arr = [];
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= getRandomInteger(2, 5); i++) {
     const randomComment = {
       id: i + number,
       avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
@@ -47,7 +47,7 @@ function foo (number) {
 
 function generateArr () {
   const result = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 25; i++) {
     const randomObj = {
       id: i,
       url: `photos/${i}.jpg`,
@@ -62,5 +62,4 @@ function generateArr () {
   return result;
 }
 
-console.log(generateArr());
-
+generateArr();
