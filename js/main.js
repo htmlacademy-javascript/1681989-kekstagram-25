@@ -30,11 +30,11 @@ const COMMENTS = [
 const names = ['Артем', 'Филипп', 'Яна', 'Анастасия'];
 
 
-function foo (number) {
+const makeComments = (number) => {
   const arr = [];
-  for (let i = 1; i <= getRandomInteger(2, 5); i++) {
+  for (let i = 1; i <= number; i++) {
     const randomComment = {
-      id: i + number,
+      id: i,
       avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
       message: COMMENTS[getRandomInteger(0, COMMENTS.length - 1)],
       name: names[getRandomInteger(0, names.length - 1)],
@@ -43,9 +43,9 @@ function foo (number) {
   }
 
   return arr;
-}
+};
 
-function generateArr () {
+const generateArr = () => {
   const result = [];
   for (let i = 1; i <= 25; i++) {
     const randomObj = {
@@ -53,13 +53,14 @@ function generateArr () {
       url: `photos/${i}.jpg`,
       description: 'Случайное описание для фотографии',
       likes: getRandomInteger(15, 200),
-      comments: foo(i),
+      comments: makeComments(getRandomInteger(1, 15)),
     };
 
     result.push(randomObj);
   }
 
   return result;
-}
+};
 
-generateArr();
+const resul =  generateArr();
+console.log(resul);
