@@ -28,12 +28,12 @@ const makeComments = (number) => {
   return arr;
 };
 
-const generateArr = () => {
+const generateArr = (imgUrl) => {
   const result = [];
   for (let i = 1; i <= 25; i++) {
     const randomObj = {
       id: i,
-      url: `photos/${i}.jpg`,
+      url: `${imgUrl}${i}.jpg`,
       description: 'Случайное описание для фотографии',
       likes: getRandomInteger(15, 200),
       comments: makeComments(getRandomInteger(1, 15)),
@@ -45,6 +45,6 @@ const generateArr = () => {
   return result;
 };
 
-generateArr();
+generateArr('photos/');
 
 export {generateArr};
