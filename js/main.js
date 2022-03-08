@@ -3,21 +3,23 @@ import {
 } from './data.js';
 
 
-function foo () {
+const imgContainer = document.querySelector('.pictures');
+
+function foo (parentElement) {
   const fragment = document.createDocumentFragment();
   const imgTemplate = document.querySelector('#picture');
 
   const arrOfValues = generateArr('img/logo-background-', 3);
 
-  for (let i = 1; i <= 3; i++) {
+  arrOfValues.forEach(({url, likes, comments}) => {
     const cloneTemplate = imgTemplate.content.cloneNode(true);
-    cloneTemplate.querySelector('.picture__img').src = `img/logo-background-${i}.jpg`;
-    cloneTemplate.querySelector('.picture__comments').textContent = i;
-    cloneTemplate.querySelector('.picture__likes').textContent = i;
+    cloneTemplate.querySelector('.picture__img').src = url;
+    cloneTemplate.querySelector('.picture__comments').textContent = comments.length;
+    cloneTemplate.querySelector('.picture__likes').textContent = likes;
     fragment.append(cloneTemplate);
-  }
+  });
 
-  console.log(fragment);
+  parentElement.append(fragment);
 }
 
-foo();
+foo(imgContainer);
