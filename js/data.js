@@ -28,9 +28,9 @@ const makeComments = (number) => {
   return arr;
 };
 
-const generateArr = (imgUrl) => {
+const generateArr = (imgUrl, count) => {
   const result = [];
-  for (let i = 1; i <= 25; i++) {
+  for (let i = 1; i <= count; i++) {
     const randomObj = {
       id: i,
       url: `${imgUrl}${i}.jpg`,
@@ -45,6 +45,6 @@ const generateArr = (imgUrl) => {
   return result;
 };
 
-generateArr('photos/');
+generateArr('photos/', 25);
 
 export {generateArr};
