@@ -28,7 +28,7 @@ const makeComments = (number) => {
   return arr;
 };
 
-const generateArr = (imgUrl, count) => {
+const generateArr = (imgUrl = '', count = 1) => {
   const result = [];
   for (let i = 1; i <= count; i++) {
     const randomObj = {
