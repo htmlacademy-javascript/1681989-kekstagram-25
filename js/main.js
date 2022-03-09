@@ -4,5 +4,5 @@ import {
 
 import {renderImages} from './render-img-1.js';
 
-generateArr();
-renderImages();
+
+const generatedImgData = generateArr(25);
