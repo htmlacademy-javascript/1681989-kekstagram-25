@@ -1,40 +1,14 @@
-import {
-  generateArr
-} from './data.js';
+import { createImgTemplate } from './img-template.js';
 
 const imgContainer = document.querySelector('.pictures');
 
-const createImgTemplate = (fragment, template) => {
-  const arrOfValues = generateArr('img/logo-background-', 3);
-
-  arrOfValues.forEach(({
-    url,
-    likes,
-    comments
-  }) => {
-    const cloneTemplate = template.content.cloneNode(true);
-    cloneTemplate.querySelector('.picture__img').src = url;
-    cloneTemplate.querySelector('.picture__comments').textContent = comments.length;
-    cloneTemplate.querySelector('.picture__likes').textContent = likes;
-    fragment.append(cloneTemplate);
-  });
-
-  return fragment;
-};
-
-const renderImages = (parentElement = null) => {
-  if (!(parentElement instanceof HTMLElement)) {
+const renderImages = (dataList) => {
+  if (!dataList.length) {
     return;
   }
-  const imgFragment = document.createDocumentFragment();
-  const imgTemplate = document.querySelector('#picture');
-  const generatedImg = createImgTemplate(imgFragment, imgTemplate);
 
-  return parentElement.append(generatedImg);
+  const generatedImgTemplate = createImgTemplate(dataList);
+  imgContainer.append(generatedImgTemplate);
 };
 
-renderImages(imgContainer);
-
-export {
-  renderImages
-};
+export { renderImages };
