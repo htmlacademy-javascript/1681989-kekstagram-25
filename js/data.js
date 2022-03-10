@@ -1,4 +1,4 @@
-import {getRandomInteger} from './util.js';
+import { getRandomInteger } from './util.js';
 
 const COMMENTS = [
   'Всё отлично!',
@@ -28,9 +28,9 @@ const makeComments = (number) => {
   return arr;
 };
 
-const generateArr = () => {
+const generateArr = (count = 1) => {
   const result = [];
-  for (let i = 1; i <= 25; i++) {
+  for (let i = 1; i <= count; i++) {
     const randomObj = {
       id: i,
       url: `photos/${i}.jpg`,
@@ -45,6 +45,6 @@ const generateArr = () => {
   return result;
 };
 
-generateArr();
+generateArr(25);
 
-export {generateArr};
+export { generateArr };
