@@ -47,4 +47,4 @@ const generateArr = (count = 1) => {
 
 generateArr(25);
 
-export { generateArr };
+export { generateArr, makeComments };

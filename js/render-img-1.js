@@ -11,4 +11,4 @@ const renderImages = (dataList) => {
   imgContainer.append(generatedImgTemplate);
 };
 
-export { renderImages };
+export { renderImages, imgContainer };
