@@ -1,6 +1,11 @@
-import { generateArr } from './data.js';
-import {renderImages} from './render-img-1.js';
+import { bigPictureClose, closeModal, getInfoAboutImg } from './openInfoImg.js';
+import { imgContainer } from './render-img.js';
 
-const generatedImgData = generateArr(25);
+bigPictureClose.addEventListener('click', closeModal);
+imgContainer.addEventListener('click', getInfoAboutImg);
 
-renderImages(generatedImgData);
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Escape') {
+    closeModal();
+  }
+});

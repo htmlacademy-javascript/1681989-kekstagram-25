@@ -14,4 +14,4 @@ const checkStrLength = (string = '', maxLength = 10) => {
 
 checkStrLength();
 
-export {getRandomInteger};
+export { getRandomInteger };

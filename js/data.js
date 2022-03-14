@@ -12,7 +12,6 @@ const COMMENTS = [
 
 const names = ['Артем', 'Филипп', 'Яна', 'Анастасия'];
 
-
 const makeComments = (number) => {
   const arr = [];
   for (let i = 1; i <= number; i++) {
@@ -44,7 +43,5 @@ const generateArr = (count = 1) => {
 
   return result;
 };
-
-generateArr(25);
 
 export { generateArr };
