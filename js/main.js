@@ -10,95 +10,121 @@ import {
   checkStrLength,
 } from './util.js';
 
+
 bigPictureClose.addEventListener('click', closeModalHandler);
 imgContainer.addEventListener('click', onGetInfoAboutImg);
 
-window.addEventListener('keydown', (e) => {
-  if (e.code === 'Escape') {
-    closeModalHandler();
-  }
-});
-
 // homework
-// classTo: 'text__wrapper',
-// errorTextParent: 'text__wrapper',
-// errorTextTag: 'div',
-// errorTextClass: 'text-help'
 const regExp = new RegExp(/^#(?=.*[^0-9])[a-zа-яё0-9]{1,19}$/i);
+
 const uploadForm = document.querySelector('.img-upload__form');
-const uploadHasTags = uploadForm.querySelector('.text__hashtags');
+const uploadFile = uploadForm.querySelector('#upload-file');
+const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
+const uploadCloseBtn = uploadForm.querySelector('.img-upload__cancel');
+const uploadHashTags = uploadForm.querySelector('.text__hashtags');
 const uploadTextArea = uploadForm.querySelector('.text__description');
-const uploadSubmit = uploadForm.querySelector('.img-upload__submit');
-const uploadFieldset = document.querySelector('.img-upload__text');
-
-function createConfigTemplate(classTo, errorTextParent, errorTextTag, errorTextClass) {
-  return {
-    classTo,
-    errorTextParent,
-    errorTextTag,
-    errorTextClass,
-  };
-}
-
-const hasTagsConfig = createConfigTemplate('text', 'text', 'div', 'text-help');
-const textAreaConfig = createConfigTemplate('text', 'text', 'div', 'text-help');
-
-const pristineHasTags = new Pristine(uploadForm, hasTagsConfig);
-const pristineTextArea = new Pristine(uploadForm, textAreaConfig);
-
+const uploadInputs = [uploadHashTags, uploadTextArea];
 
 // validation
-function validateUploadTags(value) {
+const uploadConfig = {
+  classTo: 'img-upload__text',
+  errorTextParent: 'img-upload__text',
+  errorTextTag: 'div',
+};
+
+const pristineForm = new Pristine(uploadForm, uploadConfig);
+
+const validateHashTags = (value) => {
   const arrHashTags = value.split(' ').map((item) => item.toLowerCase());
-  const invalidTags = arrHashTags.filter((item) => !regExp.test(item));
-  const doubleHashTags = arrHashTags.filter((item, index, arr) => arr.indexOf(item) !== index);
+  const wrongValues = arrHashTags.filter((item) => !regExp.test(item));
+  const doubleValues = arrHashTags.filter((item, index, array) => array.indexOf(item) !== index);
   const moreThanFive = arrHashTags.length > 5;
 
   if (value === '') {
     return true;
   }
 
-  if (invalidTags.length || doubleHashTags.length || moreThanFive) {
+  if (wrongValues.length || moreThanFive || doubleValues.length) {
     return false;
   }
+
   return true;
-}
+};
 
-function validateUploadComment(value) {
-  if (checkStrLength(value, 140)) {
-    return true;
+const validateComment = (value) => {
+  if (!checkStrLength(value, 140)) {
+    return false;
   }
-  return false;
-}
 
-pristineTextArea.addValidator(
-  uploadTextArea,
-  validateUploadComment,
-  'слишком длинный комментарий',
-  2,
-  false
-);
+  return true;
+};
 
-pristineHasTags.addValidator(
-  uploadHasTags,
-  validateUploadTags,
-  'некорректный хэштэг',
-  2,
-  false
-);
+const detectFileExtention = (value) => {
+  let extention = '';
+  for (let i = value.length; i--;) {
+    if (value[i] === '.') {
+      break;
+    }
+
+    extention += value[i];
+  }
+
+  return extention.split('').reverse().join('');
+};
+
+const validateContentFile = (value) => {
+  const fileExtention = detectFileExtention(value);
+  const correctValues = ['svg', 'jpg', 'png', 'webp'];
+  return correctValues.some((ext) => (fileExtention).toLowerCase() === ext.toLowerCase());
+};
+
+pristineForm.addValidator(uploadHashTags, validateHashTags, 'некорректный хэштэг', 2, false);
+pristineForm.addValidator(uploadTextArea, validateComment, 'слишком длинный комментарий', 2, false);
+pristineForm.addValidator(uploadFile, validateContentFile, 'выбран некорректный файл', 2, false);
+
+const checkValidationHandler = (e) => {
+  if (!pristineForm.validate()) {
+    e.preventDefault();
+    document.querySelector('.pristine-error').style.display = 'block';
+  }
+};
+
+uploadForm.addEventListener('submit', checkValidationHandler);
 
 
-// add function
-function removeFocusInput(e, arr) {
+// app
+const blurInputHandler = (item) => {
+  item.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape') {
+      e.stopPropagation();
+      item.blur();
+    }
+  });
+};
+
+const hideSettingsHandler = ()  =>{
+  uploadOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const showPictureSettings = ()  =>{
+  uploadOverlay.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+};
+
+const loadPictureHandler = (e) => {
+  e.preventDefault();
+  showPictureSettings();
+};
+
+uploadCloseBtn.addEventListener('click', hideSettingsHandler);
+uploadForm.addEventListener('change', loadPictureHandler);
+uploadInputs.forEach((item) => blurInputHandler(item));
+
+window.addEventListener('keydown', (e) => {
   if (e.code === 'Escape') {
-    e.stopPropagation();
-    arr.forEach((input) => input.blur());
+    closeModalHandler();
+    hideSettingsHandler();
   }
-}
+});
 
-function removeFousHandler(e) {
-  const arrOfInputs = [uploadHasTags, uploadTextArea];
-  removeFocusInput(e, arrOfInputs);
-}
-
-window.addEventListener('keydown', removeFousHandler);
