@@ -53,7 +53,7 @@ const hideElems = () => {
 
 hideElems();
 
-const onGetInfoAboutImg = (e) => {
+const getInfoImgHandler = (e) => {
   const imgId = e.target.parentElement.dataset.picId;
   const currentPicture = generatedImgData[imgId - 1];
   const isPicture = e.target.classList.contains('picture__img');
@@ -71,4 +71,4 @@ const onGetInfoAboutImg = (e) => {
   return isPictureClose ? openModal() : closeModalHandler();
 };
 
-export { bigPictureClose, closeModalHandler, onGetInfoAboutImg };
+export { bigPictureClose, closeModalHandler, getInfoImgHandler };
