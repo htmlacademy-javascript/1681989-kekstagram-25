@@ -16,16 +16,16 @@ const setImgValues = ({url, description, likes, comments}) => {
   bigPictureCommentsCount.textContent = comments.length;
 };
 
-const closeModal = () => {
+const closeModalHandler = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  bigPictureClose.removeEventListener('click', closeModal);
+  bigPictureClose.removeEventListener('click', closeModalHandler);
 };
 
 const openModal = () => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  bigPictureClose.addEventListener('click', closeModal);
+  bigPictureClose.addEventListener('click', closeModalHandler);
 };
 
 const createCommentTemplate = (comment) => `
@@ -53,21 +53,22 @@ const hideElems = () => {
 
 hideElems();
 
-const getInfoAboutImg = (e) => {
-  e.preventDefault();
+const getInfoImgHandler = (e) => {
   const imgId = e.target.parentElement.dataset.picId;
   const currentPicture = generatedImgData[imgId - 1];
   const isPicture = e.target.classList.contains('picture__img');
+  const isPictureInfo = e.target.classList.contains('picture__info');
   const isPictureClose = bigPicture.classList.contains('hidden');
 
-  if (isPicture) {
+  if (isPicture || isPictureInfo) {
+    e.preventDefault();
     setImgValues(currentPicture);
     renderComments(currentPicture);
   } else {
     return;
   }
 
-  return isPictureClose ? openModal() : closeModal();
+  return isPictureClose ? openModal() : closeModalHandler();
 };
 
-export { bigPictureClose, closeModal, getInfoAboutImg };
+export { bigPictureClose, closeModalHandler, getInfoImgHandler };
