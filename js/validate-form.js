@@ -22,15 +22,14 @@ const pristineForm = new Pristine(uploadForm, uploadConfig);
 
 function validateHashTags(value) {
   const arrHashTags = value.split(' ').map((item) => item.toLowerCase());
-  const wrongValues = arrHashTags.filter((item) => !regExp.test(item));
-  const doubleValues = arrHashTags.filter((item, index, array) => array.indexOf(item) !== index);
+  const wrongValues = arrHashTags.filter((item, index, array) => array.indexOf(item) !== index && !regExp.test(item));
   const moreThanFive = arrHashTags.length > 5;
 
   if (value === '') {
     return true;
   }
 
-  if (wrongValues.length || moreThanFive || doubleValues.length) {
+  if (wrongValues.length || moreThanFive) {
     return false;
   }
 
