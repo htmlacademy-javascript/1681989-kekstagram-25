@@ -33,7 +33,8 @@ const checkCommentsCount = (obj) => {
 
 const setInfoComments = (obj) => {
   const commentsCount = document.querySelector('.social__comment-count');
-  commentsCount.innerHTML = `${checkCommentsCount(obj)} из ${obj.comments.length} комментариев`;
+  commentsCount.innerHTML = `<span class="comments-shown">
+  ${checkCommentsCount(obj)}</span> из ${obj.comments.length} комментариев`;
 };
 
 const setImgSrc = (obj) => {
@@ -56,19 +57,32 @@ const openImgInfo = () => {
 };
 
 const hideComments = (items) => {
-  items.forEach((item) => item.classList.add('hidden'));
+  for (let i = 5; i < items.length; i++) {
+    items[i].classList.add('hidden');
+  }
 };
 
 
 const showComments = () => {
-  let counter = 0;
+  let counter = 5;
   return () => {
     for (let i = 0; i < 5; i++) {
       const [...items] = document.querySelectorAll('.social__comment');
+      const shownItems = items.filter((item) => !item.classList.contains('hidden'));
+      document.querySelector('.comments-shown').textContent = shownItems.length;
+
+      if (items.length % 5 === 0) {
+        if (counter === items.length - 1) {
+          document.querySelector('.social__comments-loader').classList.add('hidden');
+          document.querySelector('.comments-shown').textContent = shownItems.length + 1;
+          counter = 5;
+          return;
+        }
+      }
 
       if (counter === items.length) {
         document.querySelector('.social__comments-loader').classList.add('hidden');
-        counter = 0;
+        counter = 5;
         return;
       }
 
@@ -90,7 +104,6 @@ const onClickImgHandler = (e) => {
     document.querySelector('.social__comments-loader').addEventListener('click', showComments());
   }
 };
-
 
 export {
   onClickImgHandler,

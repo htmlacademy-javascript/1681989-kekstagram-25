@@ -21,9 +21,6 @@ import {
 
 renderImages(arrObjData);
 
-// openInfoImg
-
-
 // events
 uploadForm.addEventListener('change', loadPictureHandler);
 uploadInputs.forEach((item) => blurInputHandler(item));
@@ -31,6 +28,7 @@ uploadForm.addEventListener('submit', checkValidationHandler);
 uploadCloseBtn.addEventListener('click', hideSettingsHandler);
 bigPictureClose.addEventListener('click', closeImgInfoHandler);
 picturesContainer.addEventListener('click', onClickImgHandler);
+
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Escape') {
     hideSettingsHandler();
