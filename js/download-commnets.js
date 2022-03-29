@@ -10,10 +10,10 @@ const bigPictureCaption = document.querySelector('.social__caption');
 const bigPictureLoad = document.querySelector('.social__comments-loader');
 const bigPictureLikes = document.querySelector('.likes-count');
 
-const createComment = (comment) => `
+const createComment = ({avatar, name, message}) => `
   <li class="social__comment">
-    <img class="social__picture" src="${comment.avatar}" alt="${comment.name}" width="35" height="35">
-    <p class="social__text">${comment.message}</p>
+    <img class="social__picture" src="${avatar}" alt="${name}" width="35" height="35">
+    <p class="social__text">${message}</p>
   </li>
 `;
 
@@ -22,10 +22,10 @@ const renderComments = (obj) => {
   bigPictureComments.insertAdjacentHTML('afterbegin', commentsFragment);
 };
 
-const checkCommentsCount = (obj) => {
-  if (obj.comments.length <= 5) {
+const checkCommentsCount = ({comments}) => {
+  if (comments.length <= 5) {
     bigPictureLoad.classList.add('hidden');
-    return obj.comments.length;
+    return comments.length;
   }
 
   return 5;
