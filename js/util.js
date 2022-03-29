@@ -1,17 +1,10 @@
-const getRandomInteger = (min = 0, max = 1) => {
-  min = +min;
-  max = +max;
-  const isWrongRange = min >= max || min < 0 || max < 0 || isNaN(min) || isNaN(max);
-  const randomInteger = Math.floor(Math.random() * (max - min + 1) + min);
-  return isWrongRange ? 'Неверно передан диапазон значений' : randomInteger;
+const getRandomPositiveInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
 };
 
-const checkStrLength = (string = '', maxLength = 10) => {
-  string = string.toString();
-  const isLongLength = string.length <= maxLength;
-  return isLongLength;
-};
+const checkStringLength = (string, length) => string.length <= length;
 
-checkStrLength();
-
-export { getRandomInteger, checkStrLength };
+export { getRandomPositiveInteger, checkStringLength };

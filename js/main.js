@@ -1,36 +1,37 @@
 import {
-  bigPictureClose,
-  closeModalHandler,
-  getInfoImgHandler
-} from './openInfoImg.js';
+  arrObjData
+} from './data.js';
+import { bigPictureClose, closeImgInfoHandler, onClickImgHandler } from './download-commnets.js';
 
 import {
-  imgContainer
-} from './render-img.js';
+  picturesContainer,
+  renderImages
+} from './render.js';
 
 import {
-  uploadCloseBtn,
-  uploadInputs,
+  blurInputHandler,
+  checkValidationHandler,
   hideSettingsHandler,
   loadPictureHandler,
-  blurInputHandler,
-} from './upload-file.js';
-
-import {
+  uploadCloseBtn,
   uploadForm,
+  uploadInputs
 } from './validate-form.js';
 
 
-bigPictureClose.addEventListener('click', closeModalHandler);
-imgContainer.addEventListener('click', getInfoImgHandler);
-uploadCloseBtn.addEventListener('click', hideSettingsHandler);
+renderImages(arrObjData);
+
+// events
 uploadForm.addEventListener('change', loadPictureHandler);
 uploadInputs.forEach((item) => blurInputHandler(item));
+uploadForm.addEventListener('submit', checkValidationHandler);
+uploadCloseBtn.addEventListener('click', hideSettingsHandler);
+bigPictureClose.addEventListener('click', closeImgInfoHandler);
+picturesContainer.addEventListener('click', onClickImgHandler);
 
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Escape') {
-    closeModalHandler();
     hideSettingsHandler();
+    closeImgInfoHandler();
   }
 });
-

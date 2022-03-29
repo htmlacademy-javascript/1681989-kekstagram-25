@@ -1,6 +1,8 @@
-import { getRandomInteger } from './util.js';
+import {
+  getRandomPositiveInteger
+} from './util.js';
 
-const COMMENTS = [
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -10,38 +12,49 @@ const COMMENTS = [
   'Как можно было поймать такой неудачный момент?!',
 ];
 
-const names = ['Артем', 'Филипп', 'Яна', 'Анастасия'];
+const NAMES = [
+  'Игорь',
+  'Филипп',
+  'Артем',
+  'Михаил',
+];
 
-const makeComments = (number) => {
-  const arr = [];
-  for (let i = 1; i <= number; i++) {
-    const randomComment = {
-      id: i,
-      avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-      message: COMMENTS[getRandomInteger(0, COMMENTS.length - 1)],
-      name: names[getRandomInteger(0, names.length - 1)],
-    };
-    arr.push(randomComment);
+const createCommentTemplate = (iterator) => ({
+  id: iterator,
+  avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
+  message: MESSAGES[getRandomPositiveInteger(0, MESSAGES.length - 1)],
+  name: NAMES[getRandomPositiveInteger(0, NAMES.length - 1)],
+});
+
+const createArrComments = (counter) => {
+  const arrComments = [];
+
+  for (let i = 1; i <= counter; i++) {
+    arrComments.push(createCommentTemplate(i));
   }
 
-  return arr;
+  return arrComments;
 };
 
-const generateArr = (count = 1) => {
-  const result = [];
-  for (let i = 1; i <= count; i++) {
-    const randomObj = {
-      id: i,
-      url: `photos/${i}.jpg`,
-      description: 'Случайное описание для фотографии',
-      likes: getRandomInteger(15, 200),
-      comments: makeComments(getRandomInteger(1, 15)),
-    };
+const createObjTemplate = (iterator) => ({
+  id: iterator,
+  url: `photos/${iterator}.jpg`,
+  description: 'Описание фотографии',
+  likes: getRandomPositiveInteger(15, 200),
+  comments: createArrComments(getRandomPositiveInteger(1, 20)),
+});
 
-    result.push(randomObj);
+const createArrObj = (counter) => {
+  const arrOfObj = [];
+  for (let i = 1; i <= counter; i++) {
+    arrOfObj.push(createObjTemplate(i));
   }
 
-  return result;
+  return arrOfObj;
 };
 
-export { generateArr };
+const arrObjData = createArrObj(25);
+
+export {
+  arrObjData
+};
