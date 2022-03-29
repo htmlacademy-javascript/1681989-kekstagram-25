@@ -41,7 +41,7 @@ const createObjTemplate = (iterator) => ({
   url: `photos/${iterator}.jpg`,
   description: 'Описание фотографии',
   likes: getRandomPositiveInteger(15, 200),
-  comments: createArrComments(getRandomPositiveInteger(0, 20)),
+  comments: createArrComments(getRandomPositiveInteger(1, 20)),
 });
 
 const createArrObj = (counter) => {
