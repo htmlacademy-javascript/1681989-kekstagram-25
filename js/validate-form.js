@@ -20,6 +20,52 @@ const btnMinus = document.querySelector('.scale__control--smaller');
 const btnPlus = document.querySelector('.scale__control--bigger');
 const effectsPreview = document.querySelectorAll('.effects__preview');
 
+// slider
+
+const slider = document.querySelector('.effect-level__slider');
+const sliderInput = document.querySelector('.effect-level__value');
+
+const sliderSettings = {
+  start: 1,
+  connect: [true, false],
+  step: 0.1,
+  range: {
+    min: 0.1,
+    max: 1,
+  }
+};
+
+// slider
+const changeEffectHandler = () => {
+  const [...effectsRadios] = document.querySelectorAll('.effects__item input');
+  const checkedRadio = effectsRadios.find((item) => item.checked);
+  const effectClass = `effects__preview--${checkedRadio.value}`;
+  scaleControlImg.setAttribute('class', `img-upload__preview ${effectClass}`);
+
+  slider.noUiSlider.on('update', (values) => {
+    sliderInput.value = values[0];
+    switch (checkedRadio.value) {
+      case 'chrome':
+        scaleControlImg.style.filter = `grayscale(${values[0]})`;
+        break;
+      case 'sepia':
+        scaleControlImg.style.filter = `sepia(${values[0]})`;
+        break;
+      case 'marvin':
+        scaleControlImg.style.filter = `invert(${values[0]})`;
+        break;
+      case 'phobos':
+        scaleControlImg.style.filter = `blur(${values[0]})`;
+        break;
+      case 'heat':
+        scaleControlImg.style.filter = `brightness(${values[0]})`;
+        break;
+    }
+  });
+};
+
+noUiSlider.create(slider, sliderSettings);
+
 const loadPicture = (e) => {
   if (e.target === uploadFile) {
     const files = e.target.files;
@@ -69,6 +115,8 @@ const decrementValue = (value) => {
   };
 };
 
+// events homework
+
 btnPlus.addEventListener('click', () => {
   incrementValue(scaleControl.value)();
 });
@@ -77,6 +125,7 @@ btnMinus.addEventListener('click', () => {
   decrementValue(scaleControl.value)();
 });
 
+uploadForm.addEventListener('change', changeEffectHandler);
 uploadForm.addEventListener('change', loadPicture);
 
 // homework
