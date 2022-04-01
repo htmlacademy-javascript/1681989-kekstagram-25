@@ -35,3 +35,9 @@ window.addEventListener('keydown', (e) => {
     closeImgInfoHandler();
   }
 });
+
+// подставить выбранное изображение
+// реализовать изменение масшатаба картинки
+
+
+

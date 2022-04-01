@@ -12,6 +12,75 @@ const uploadCloseBtn = uploadForm.querySelector('.img-upload__cancel');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const uploadInputs = [uploadHashTags, uploadTextArea];
 
+
+// homework
+const scaleControlImg = document.querySelector('.img-upload__preview img');
+const scaleControl = document.querySelector('.scale__control--value');
+const btnMinus = document.querySelector('.scale__control--smaller');
+const btnPlus = document.querySelector('.scale__control--bigger');
+const effectsPreview = document.querySelectorAll('.effects__preview');
+
+const loadPicture = (e) => {
+  if (e.target === uploadFile) {
+    const files = e.target.files;
+    const file = files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = function () {
+      const url = fileReader.result;
+      scaleControlImg.src = url;
+      effectsPreview.forEach((item) => {
+        item.style.backgroundImage = `url(${url})`;
+      });
+    };
+
+    fileReader.readAsDataURL(file);
+  }
+};
+
+const incrementValue = (value) => {
+  let counter = parseFloat(value);
+  return () => {
+    for (let i = 0; i < 25; i++) {
+      if (counter >= 100) {
+        btnPlus.setAttribute('disabled', '');
+        return;
+      }
+      btnMinus.removeAttribute('disabled', '');
+      ++counter;
+      scaleControlImg.style.transform = `scale(${counter}%)`;
+      scaleControl.setAttribute('value', `${counter}%`);
+    }
+  };
+};
+
+const decrementValue = (value) => {
+  let counter = parseFloat(value);
+  return () => {
+    for (let i = 0; i < 25; i++) {
+      if (counter <= 25) {
+        btnMinus.setAttribute('disabled', '');
+        return;
+      }
+      btnPlus.removeAttribute('disabled', '');
+      --counter;
+      scaleControlImg.style.transform = `scale(${counter}%)`;
+      scaleControl.setAttribute('value', `${counter}%`);
+    }
+  };
+};
+
+btnPlus.addEventListener('click', () => {
+  incrementValue(scaleControl.value)();
+});
+
+btnMinus.addEventListener('click', () => {
+  decrementValue(scaleControl.value)();
+});
+
+uploadForm.addEventListener('change', loadPicture);
+
+// homework
+
 const uploadConfig = {
   classTo: 'img-upload__text',
   errorTextParent: 'img-upload__text',
@@ -20,7 +89,7 @@ const uploadConfig = {
 
 const pristineForm = new Pristine(uploadForm, uploadConfig);
 
-function validateHashTags(value) {
+const validateHashTags = (value) => {
   const arrHashTags = value.split(' ').map((item) => item.toLowerCase());
   const wrongValues = arrHashTags.filter((item, index, array) => array.indexOf(item) !== index || !regExp.test(item));
   const moreThanFive = arrHashTags.length > 5;
@@ -34,17 +103,17 @@ function validateHashTags(value) {
   }
 
   return true;
-}
+};
 
-function validateComment(value) {
+const validateComment = (value) => {
   if (!checkStringLength(value, 140)) {
     return false;
   }
 
   return true;
-}
+};
 
-function detectFileExtention(value) {
+const detectFileExtention = (value) => {
   let extention = '';
   for (let i = value.length; i--;) {
     if (value[i] === '.') {
@@ -55,38 +124,39 @@ function detectFileExtention(value) {
   }
 
   return extention.split('').reverse().join('');
-}
+};
 
-function validateContentFile(value) {
+const validateContentFile = (value) => {
   const fileExtention = detectFileExtention(value);
   const correctValues = ['svg', 'jpg', 'png', 'webp'];
   return correctValues.some((ext) => (fileExtention).toLowerCase() === ext.toLowerCase());
-}
+};
 
-function showPictureSettings() {
+const showPictureSettings = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-}
+};
 
-function loadPictureHandler(e) {
+const loadPictureHandler = (e) => {
   e.preventDefault();
+  e.stopPropagation();
   showPictureSettings();
-}
+};
 
-function hideSettingsHandler() {
+const hideSettingsHandler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadFile.value = '';
-}
+};
 
-function blurInputHandler(item) {
+const blurInputHandler = (item) => {
   item.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') {
       e.stopPropagation();
       item.blur();
     }
   });
-}
+};
 
 pristineForm.addValidator(uploadHashTags, validateHashTags, 'некорректный хэштэг', 2, false);
 pristineForm.addValidator(uploadTextArea, validateComment, 'слишком длинный комментарий', 2, false);
