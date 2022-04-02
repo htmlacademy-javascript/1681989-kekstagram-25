@@ -62,7 +62,6 @@ const hideComments = (items) => {
   }
 };
 
-
 const showComments = () => {
   let counter = 5;
   return () => {
