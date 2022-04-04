@@ -62,31 +62,20 @@ const hideComments = (items) => {
   }
 };
 
-
 const showComments = () => {
   let counter = 5;
   return () => {
     for (let i = 0; i < 5; i++) {
       const [...items] = document.querySelectorAll('.social__comment');
-      const shownItems = items.filter((item) => !item.classList.contains('hidden'));
-      document.querySelector('.comments-shown').textContent = shownItems.length;
 
-      if (items.length % 5 === 0) {
-        if (counter === items.length - 1) {
-          document.querySelector('.social__comments-loader').classList.add('hidden');
-          document.querySelector('.comments-shown').textContent = shownItems.length + 1;
-          counter = 5;
-          return;
-        }
-      }
+      items[counter++].classList.remove('hidden');
+      document.querySelector('.comments-shown').textContent = counter;
 
       if (counter === items.length) {
         document.querySelector('.social__comments-loader').classList.add('hidden');
         counter = 5;
         return;
       }
-
-      items[counter++].classList.remove('hidden');
     }
   };
 };

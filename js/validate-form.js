@@ -20,32 +20,31 @@ const uploadConfig = {
 
 const pristineForm = new Pristine(uploadForm, uploadConfig);
 
-function validateHashTags(value) {
+const validateHashTags = (value) => {
   const arrHashTags = value.split(' ').map((item) => item.toLowerCase());
-  const wrongValues = arrHashTags.filter((item) => !regExp.test(item));
-  const doubleValues = arrHashTags.filter((item, index, array) => array.indexOf(item) !== index);
+  const wrongValues = arrHashTags.filter((item, index, array) => array.indexOf(item) !== index || !regExp.test(item));
   const moreThanFive = arrHashTags.length > 5;
 
   if (value === '') {
     return true;
   }
 
-  if (wrongValues.length || moreThanFive || doubleValues.length) {
+  if (moreThanFive || wrongValues.length) {
     return false;
   }
 
   return true;
-}
+};
 
-function validateComment(value) {
+const validateComment = (value) => {
   if (!checkStringLength(value, 140)) {
     return false;
   }
 
   return true;
-}
+};
 
-function detectFileExtention(value) {
+const detectFileExtention = (value) => {
   let extention = '';
   for (let i = value.length; i--;) {
     if (value[i] === '.') {
@@ -56,49 +55,50 @@ function detectFileExtention(value) {
   }
 
   return extention.split('').reverse().join('');
-}
+};
 
-function validateContentFile(value) {
+const validateContentFile = (value) => {
   const fileExtention = detectFileExtention(value);
   const correctValues = ['svg', 'jpg', 'png', 'webp'];
   return correctValues.some((ext) => (fileExtention).toLowerCase() === ext.toLowerCase());
-}
+};
 
-function showPictureSettings() {
+const showPictureSettings = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-}
+};
 
-function loadPictureHandler(e) {
+const loadPictureHandler = (e) => {
   e.preventDefault();
+  e.stopPropagation();
   showPictureSettings();
-}
+};
 
-function hideSettingsHandler() {
+const hideSettingsHandler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadFile.value = '';
-}
+};
 
-function blurInputHandler(item) {
+const blurInputHandler = (item) => {
   item.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') {
       e.stopPropagation();
       item.blur();
     }
   });
-}
+};
 
 pristineForm.addValidator(uploadHashTags, validateHashTags, 'некорректный хэштэг', 2, false);
 pristineForm.addValidator(uploadTextArea, validateComment, 'слишком длинный комментарий', 2, false);
 pristineForm.addValidator(uploadFile, validateContentFile, 'выбран некорректный файл', 2, false);
 
-function checkValidationHandler(e) {
+const checkValidationHandler = (e) => {
   if (!pristineForm.validate()) {
     e.preventDefault();
     document.querySelector('.pristine-error').style.display = 'block';
   }
-}
+};
 
 
 export {
@@ -108,5 +108,6 @@ export {
   checkValidationHandler,
   uploadCloseBtn,
   uploadInputs,
-  uploadForm
+  uploadForm,
+  uploadFile
 };
