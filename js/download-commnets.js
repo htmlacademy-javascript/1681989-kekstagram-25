@@ -84,7 +84,7 @@ const onClickImgHandler = (e) => {
   if (e.target.classList.contains('picture__img')) {
     openImgInfo();
     const imgId = parseFloat(e.target.dataset.imgId);
-    const currentObj = arrObjData[imgId - 1];
+    const currentObj = arrObjData[imgId];
     setImgSrc(currentObj);
     renderComments(currentObj);
     setInfoComments(currentObj);

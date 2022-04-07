@@ -1,7 +1,4 @@
 import {
-  arrObjData
-} from './data.js';
-import {
   bigPictureClose,
   closeImgInfoHandler,
   onClickImgHandler
@@ -9,7 +6,6 @@ import {
 
 import {
   picturesContainer,
-  renderImages
 } from './render.js';
 
 import {
@@ -32,8 +28,6 @@ import {
   uploadInputs
 } from './validate-form.js';
 
-
-renderImages(arrObjData);
 
 // events
 uploadForm.addEventListener('change', loadPictureHandler);
