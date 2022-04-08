@@ -48,11 +48,11 @@ btnMinus.addEventListener('click', () => {
 uploadForm.addEventListener('change', changeEffectHandler);
 uploadForm.addEventListener('change', loadLocalPictureHandler);
 
-
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Escape') {
     hideSettingsHandler();
     closeImgInfoHandler();
   }
 });
+
 

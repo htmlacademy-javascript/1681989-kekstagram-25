@@ -2,6 +2,10 @@ import {
   checkStringLength
 } from './util.js';
 
+import {
+  sliderInput
+} from './slider-effects.js';
+
 const regExp = new RegExp(/^#(?=.*[^0-9])[a-zа-яё0-9]{1,19}$/i);
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -93,13 +97,51 @@ pristineForm.addValidator(uploadHashTags, validateHashTags, 'некоррект�
 pristineForm.addValidator(uploadTextArea, validateComment, 'слишком длинный комментарий', 2, false);
 pristineForm.addValidator(uploadFile, validateContentFile, 'выбран некорректный файл', 2, false);
 
-const checkValidationHandler = (e) => {
-  if (!pristineForm.validate()) {
-    e.preventDefault();
-    document.querySelector('.pristine-error').style.display = 'block';
-  }
+const successMessageTemplate = () => `
+    <section class="success hidden">
+      <div class="success__inner">
+        <h2 class="success__title">Изображение успешно загружено</h2>
+        <button type="button" class="success__button">Круто!</button>
+      </div>
+    </section>
+`;
+
+const showSucessMessage = () => {
+  document.querySelector('.success').classList.remove('hidden');
+  document.body.classList.add('modal-open');
 };
 
+const createSuccessMessage = () => {
+  document.body.insertAdjacentHTML('beforeend', successMessageTemplate());
+};
+
+createSuccessMessage();
+
+
+const checkValidationHandler = (e) => {
+  e.preventDefault();
+  if (!pristineForm.validate()) {
+    return false;
+  } else {
+    const formData = new FormData(uploadForm);
+    const obj = {};
+    formData.forEach((value, key) => {
+      obj[key] = value;
+    });
+
+
+    fetch('https://25.javascript.pages.academy/kekstagram', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          hideSettingsHandler();
+          showSucessMessage();
+        }
+      });
+  }
+};
 
 export {
   loadPictureHandler,
@@ -111,3 +153,4 @@ export {
   uploadForm,
   uploadFile
 };
+

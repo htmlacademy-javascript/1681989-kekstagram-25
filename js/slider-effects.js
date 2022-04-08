@@ -154,4 +154,5 @@ export {
   incrementValueHandler,
   decrementValueHandler,
   loadLocalPictureHandler,
+  sliderInput,
 };
