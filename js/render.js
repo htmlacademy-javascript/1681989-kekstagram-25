@@ -1,7 +1,3 @@
-import {
-  arrObjData
-} from './data.js';
-
 const picturesContainer = document.querySelector('.pictures');
 
 const createImgTemplate = ({
@@ -28,8 +24,6 @@ const renderImages = (data) => {
   data.forEach((obj) => imagesFragment.append(createImgTemplate(obj)));
   picturesContainer.append(imagesFragment);
 };
-
-renderImages(arrObjData);
 
 export {
   renderImages,

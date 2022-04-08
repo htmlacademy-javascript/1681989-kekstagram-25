@@ -78,13 +78,15 @@ const hideSettingsHandler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadFile.value = '';
+  uploadForm.reset();
+  document.querySelector('.img-upload__effect-level').classList.add('hidden');
+  document.querySelector('.img-upload__preview img').style = '';
 };
 
 const blurInputHandler = (item) => {
   item.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') {
       e.stopPropagation();
-      item.blur();
     }
   });
 };
@@ -93,21 +95,109 @@ pristineForm.addValidator(uploadHashTags, validateHashTags, 'некоррект�
 pristineForm.addValidator(uploadTextArea, validateComment, 'слишком длинный комментарий', 2, false);
 pristineForm.addValidator(uploadFile, validateContentFile, 'выбран некорректный файл', 2, false);
 
-const checkValidationHandler = (e) => {
-  if (!pristineForm.validate()) {
-    e.preventDefault();
-    document.querySelector('.pristine-error').style.display = 'block';
+const successMessageTemplate = () => `
+    <section class="success hidden">
+      <div class="success__inner">
+        <h2 class="success__title">Изображение успешно загружено</h2>
+        <button type="button" class="success__button">Круто!</button>
+      </div>
+    </section>
+`;
+
+const errorMessageTemplate = (error) => `
+    <section class="error hidden">
+      <div class="error__inner">
+        <h2 class="error__title">Ошибка загрузки файла: ${error}</h2>
+        <button type="button" class="error__button">Загрузить другой файл</button>
+      </div>
+    </section>
+`;
+
+document.body.insertAdjacentHTML('beforeend', successMessageTemplate());
+document.body.insertAdjacentHTML('beforeend', errorMessageTemplate());
+
+const successWrapper = document.querySelector('.success');
+const errorWrapper = document.querySelector('.error');
+
+const showSucessMessageForm = () => {
+  successWrapper.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+};
+
+const showErrorMessageForm = (error) => {
+  errorWrapper.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  errorMessageTemplate(error);
+};
+
+const hideSuccessMessageClick = (e) => {
+  if (e.target.classList.contains('success') || e.target.classList.contains('success__button')) {
+    successWrapper.classList.add('hidden');
+    document.body.classList.remove('modal-open');
   }
 };
 
+const hideErrorMessageClick = (e) => {
+  if (e.target.classList.contains('error') || e.target.classList.contains('error__button')) {
+    errorWrapper.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+  }
+};
+
+const hideSuccessMessage = () => {
+  successWrapper.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const hideErrorMessage = () => {
+  errorWrapper.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const checkValidationHandler = (e) => {
+  e.preventDefault();
+  if (!pristineForm.validate()) {
+    return false;
+  } else {
+    const formData = new FormData(uploadForm);
+    const obj = {};
+    formData.forEach((value, key) => {
+      obj[key] = value;
+    });
+
+
+    fetch('https://25.javascript.pages.academy/kekstagram', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          hideSettingsHandler();
+          showSucessMessageForm();
+        }
+      })
+      .catch((error) => {
+        hideSettingsHandler();
+        showErrorMessageForm(error);
+      });
+  }
+};
 
 export {
   loadPictureHandler,
   hideSettingsHandler,
   blurInputHandler,
   checkValidationHandler,
+  hideSuccessMessageClick,
+  hideErrorMessageClick,
+  hideSuccessMessage,
+  hideErrorMessage,
   uploadCloseBtn,
   uploadInputs,
   uploadForm,
-  uploadFile
+  uploadFile,
+  uploadOverlay,
+  successWrapper,
+  errorWrapper
 };
+
