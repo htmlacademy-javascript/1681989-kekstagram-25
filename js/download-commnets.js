@@ -97,5 +97,6 @@ const onClickImgHandler = (e) => {
 export {
   onClickImgHandler,
   closeImgInfoHandler,
-  bigPictureClose
+  bigPictureClose,
+  bigPicture
 };

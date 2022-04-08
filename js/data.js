@@ -2,15 +2,13 @@ import { renderImages } from './render.js';
 
 let arrObjData;
 
-function errorMessageTemplate (error) {
-  return `
+const errorMessageTemplate = (error) => `
   <section class="error">
     <div class="error__inner">
       <h2 class="error__title">${error}</h2>
     </div>
   </section>
-  `;
-}
+`;
 
 function showErrorMessage (error) {
   document.body.insertAdjacentHTML('afterbegin', errorMessageTemplate(error));

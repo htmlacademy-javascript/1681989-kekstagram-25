@@ -2,10 +2,6 @@ import {
   checkStringLength
 } from './util.js';
 
-import {
-  sliderInput
-} from './slider-effects.js';
-
 const regExp = new RegExp(/^#(?=.*[^0-9])[a-zа-яё0-9]{1,19}$/i);
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -82,13 +78,15 @@ const hideSettingsHandler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadFile.value = '';
+  uploadForm.reset();
+  document.querySelector('.img-upload__effect-level').classList.add('hidden');
+  document.querySelector('.img-upload__preview img').style = '';
 };
 
 const blurInputHandler = (item) => {
   item.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') {
       e.stopPropagation();
-      item.blur();
     }
   });
 };
@@ -106,17 +104,55 @@ const successMessageTemplate = () => `
     </section>
 `;
 
-const showSucessMessage = () => {
-  document.querySelector('.success').classList.remove('hidden');
+const errorMessageTemplate = (error) => `
+    <section class="error hidden">
+      <div class="error__inner">
+        <h2 class="error__title">Ошибка загрузки файла: ${error}</h2>
+        <button type="button" class="error__button">Загрузить другой файл</button>
+      </div>
+    </section>
+`;
+
+document.body.insertAdjacentHTML('beforeend', successMessageTemplate());
+document.body.insertAdjacentHTML('beforeend', errorMessageTemplate());
+
+const successWrapper = document.querySelector('.success');
+const errorWrapper = document.querySelector('.error');
+
+const showSucessMessageForm = () => {
+  successWrapper.classList.remove('hidden');
   document.body.classList.add('modal-open');
 };
 
-const createSuccessMessage = () => {
-  document.body.insertAdjacentHTML('beforeend', successMessageTemplate());
+const showErrorMessageForm = (error) => {
+  errorWrapper.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  errorMessageTemplate(error);
 };
 
-createSuccessMessage();
+const hideSuccessMessageClick = (e) => {
+  if (e.target.classList.contains('success') || e.target.classList.contains('success__button')) {
+    successWrapper.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+  }
+};
 
+const hideErrorMessageClick = (e) => {
+  if (e.target.classList.contains('error') || e.target.classList.contains('error__button')) {
+    errorWrapper.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+  }
+};
+
+const hideSuccessMessage = () => {
+  successWrapper.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const hideErrorMessage = () => {
+  errorWrapper.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
 
 const checkValidationHandler = (e) => {
   e.preventDefault();
@@ -137,8 +173,12 @@ const checkValidationHandler = (e) => {
       .then((response) => {
         if (response.ok) {
           hideSettingsHandler();
-          showSucessMessage();
+          showSucessMessageForm();
         }
+      })
+      .catch((error) => {
+        hideSettingsHandler();
+        showErrorMessageForm(error);
       });
   }
 };
@@ -148,9 +188,16 @@ export {
   hideSettingsHandler,
   blurInputHandler,
   checkValidationHandler,
+  hideSuccessMessageClick,
+  hideErrorMessageClick,
+  hideSuccessMessage,
+  hideErrorMessage,
   uploadCloseBtn,
   uploadInputs,
   uploadForm,
-  uploadFile
+  uploadFile,
+  uploadOverlay,
+  successWrapper,
+  errorWrapper
 };
 

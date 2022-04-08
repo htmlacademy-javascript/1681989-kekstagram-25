@@ -1,4 +1,5 @@
 import {
+  bigPicture,
   bigPictureClose,
   closeImgInfoHandler,
   onClickImgHandler
@@ -21,11 +22,18 @@ import {
 import {
   blurInputHandler,
   checkValidationHandler,
+  hideSuccessMessage,
+  hideSuccessMessageClick,
   hideSettingsHandler,
   loadPictureHandler,
+  successWrapper,
   uploadCloseBtn,
   uploadForm,
-  uploadInputs
+  uploadInputs,
+  uploadOverlay,
+  hideErrorMessageClick,
+  errorWrapper,
+  hideErrorMessage
 } from './validate-form.js';
 
 
@@ -48,11 +56,28 @@ btnMinus.addEventListener('click', () => {
 uploadForm.addEventListener('change', changeEffectHandler);
 uploadForm.addEventListener('change', loadLocalPictureHandler);
 
-window.addEventListener('keydown', (e) => {
+const closeModalEsc = (e) => {
   if (e.code === 'Escape') {
-    hideSettingsHandler();
-    closeImgInfoHandler();
+    if (!uploadOverlay.classList.contains('hidden')) {
+      hideSettingsHandler();
+    }
+
+    if (!bigPicture.classList.contains('hidden')) {
+      closeImgInfoHandler();
+    }
+
+    if (!successWrapper.classList.contains('hidden')) {
+      hideSuccessMessage();
+    }
+
+    if (!errorWrapper.classList.contains('hidden')) {
+      hideErrorMessage();
+    }
   }
-});
+};
+
+document.addEventListener('click', hideSuccessMessageClick);
+document.addEventListener('click', hideErrorMessageClick);
+window.addEventListener('keydown', closeModalEsc);
 
 

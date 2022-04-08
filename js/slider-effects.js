@@ -58,7 +58,6 @@ const decrementValueHandler = (value) => {
   };
 };
 
-
 const sliderSettings = {
   start: 1,
   connect: [true, false],
@@ -137,13 +136,17 @@ const initRangeSlider = (value) => {
   }
 };
 
-const changeEffectHandler = () => {
+initRangeSlider('none');
+
+const changeEffectHandler = (e) => {
   const [...effectsRadios] = document.querySelectorAll('.effects__item input');
   const checkedRadio = effectsRadios.find((item) => item.checked);
   const effectClass = `effects__preview--${checkedRadio.value}`;
   scaleControlImg.setAttribute('class', `img-upload__preview ${effectClass}`);
-  initRangeSlider(checkedRadio.value);
-  changeEffect(checkedRadio.value);
+  if (e.target.classList.contains('effects__radio')) {
+    initRangeSlider(checkedRadio.value);
+    changeEffect(checkedRadio.value);
+  }
 };
 
 export {
