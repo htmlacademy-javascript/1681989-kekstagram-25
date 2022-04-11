@@ -20,6 +20,8 @@ const createImgTemplate = ({
 };
 
 const renderImages = (data) => {
+  const pictures = document.querySelectorAll('.picture');
+  pictures.forEach((pic) => pic.remove());
   const imagesFragment = document.createDocumentFragment();
   data.forEach((obj) => imagesFragment.append(createImgTemplate(obj)));
   picturesContainer.append(imagesFragment);
