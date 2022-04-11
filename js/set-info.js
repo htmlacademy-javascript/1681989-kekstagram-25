@@ -2,29 +2,39 @@ import {
   arrObjData
 } from './data.js';
 
-const bigPicture = document.querySelector('.big-picture');
-const bigPictureClose = document.querySelector('.big-picture__cancel');
-const bigPictureImg = document.querySelector('.big-picture__img img');
-const bigPictureComments = document.querySelector('.social__comments');
-const bigPictureCaption = document.querySelector('.social__caption');
-const bigPictureLoad = document.querySelector('.social__comments-loader');
-const bigPictureLikes = document.querySelector('.likes-count');
+import { closeInfoKey } from './keydown-fn.js';
 
-const createComment = ({avatar, name, message}) => `
+const bigPicture = document.querySelector('.big-picture');
+const pictureClose = bigPicture.querySelector('.big-picture__cancel');
+const pictureImg = bigPicture.querySelector('.big-picture__img img');
+const pictureComments = bigPicture.querySelector('.social__comments');
+const pictureCaption = bigPicture.querySelector('.social__caption');
+const pictureLoad = bigPicture.querySelector('.social__comments-loader');
+const pictureLikes = bigPicture.querySelector('.likes-count');
+
+const createComment = ({
+  avatar,
+  name,
+  message
+} = {}) => `
   <li class="social__comment">
     <img class="social__picture" src="${avatar}" alt="${name}" width="35" height="35">
     <p class="social__text">${message}</p>
   </li>
 `;
 
-const renderComments = (obj) => {
-  const commentsFragment = obj.comments.reduce((acc, item) => acc + createComment(item), '');
-  bigPictureComments.insertAdjacentHTML('afterbegin', commentsFragment);
+const renderComments = ({
+  comments
+} = {}) => {
+  const commentsFragment = comments.reduce((acc, item) => acc + createComment(item), '');
+  pictureComments.insertAdjacentHTML('afterbegin', commentsFragment);
 };
 
-const checkCommentsCount = ({comments}) => {
+const checkCommentsCount = ({
+  comments
+} = {}) => {
   if (comments.length <= 5) {
-    bigPictureLoad.classList.add('hidden');
+    pictureLoad.classList.add('hidden');
     return comments.length;
   }
 
@@ -37,18 +47,23 @@ const setInfoComments = (obj) => {
   ${checkCommentsCount(obj)}</span> из ${obj.comments.length} комментариев`;
 };
 
-const setImgSrc = (obj) => {
-  bigPictureImg.src = obj.url;
-  bigPictureImg.alt = obj.description;
-  bigPictureCaption.textContent = obj.description;
-  bigPictureLikes.textContent = obj.likes;
+const setImgSrc = ({
+  url,
+  description,
+  likes
+} = {}) => {
+  pictureImg.src = url;
+  pictureImg.alt = description;
+  pictureCaption.textContent = description;
+  pictureLikes.textContent = likes;
 };
 
 const closeImgInfoHandler = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  bigPictureLoad.classList.remove('hidden');
-  bigPictureComments.innerHTML = '';
+  pictureLoad.classList.remove('hidden');
+  pictureComments.innerHTML = '';
+  window.removeEventListener('keydown', closeInfoKey);
 };
 
 const openImgInfo = () => {
@@ -91,12 +106,13 @@ const onClickImgHandler = (e) => {
     checkCommentsCount(currentObj);
     hideComments(document.querySelectorAll('.social__comment'));
     document.querySelector('.social__comments-loader').addEventListener('click', showComments());
+    window.addEventListener('keydown', closeInfoKey);
   }
 };
 
 export {
   onClickImgHandler,
   closeImgInfoHandler,
-  bigPictureClose,
+  pictureClose,
   bigPicture
 };
