@@ -2,6 +2,7 @@ import { arrObjData } from './data.js';
 import { renderImages } from './render.js';
 import { getUniqueIntegers } from './unique-data.js';
 
+const DELAY = 500;
 
 const filterCategories = (category) => {
   const categoryList = {
@@ -29,7 +30,7 @@ const filterCategories = (category) => {
   return categoryList[category];
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -46,7 +47,7 @@ const addActiveClass = (button) => {
 const filterHandler = (e) => {
   if (e.target.classList.contains('img-filters__button')) {
     const filterFn = filterCategories(e.target.getAttribute('id'));
-    debounce(filterFn, 500)();
+    debounce(filterFn, DELAY)();
     addActiveClass(e.target);
   }
 };

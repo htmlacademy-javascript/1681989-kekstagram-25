@@ -3,7 +3,7 @@ import { initFilter } from './filter.js';
 import { renderImages } from './render.js';
 import { hideErrorMessage } from './validate-form.js';
 
-let arrObjData;
+const arrObjData = [];
 
 fetch('https://25.javascript.pages.academy/kekstagram/data')
   .then((response) => {
@@ -12,7 +12,10 @@ fetch('https://25.javascript.pages.academy/kekstagram/data')
     }
   })
   .then((users) => {
-    arrObjData = users;
+    for (let i = 0; i < users.length; i++) {
+      arrObjData.push(users[i]);
+    }
+
     initFilter();
     renderImages(arrObjData);
   })

@@ -83,6 +83,7 @@ const hideSettingsHandler = () => {
 };
 
 const showPictureSettings = () => {
+  document.querySelector('.img-upload__submit').removeAttribute('disabled', '');
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.querySelector('.img-upload__preview img').style = '';
@@ -185,13 +186,13 @@ const checkValidationHandler = (e) => {
     })
       .then((response) => {
         if (response.ok) {
+          document.querySelector('.img-upload__submit').setAttribute('disabled', '');
           hideSettingsHandler();
           showSucessMessageForm();
+        } else {
+          hideSettingsHandler();
+          showErrorMessageForm();
         }
-      })
-      .catch((error) => {
-        hideSettingsHandler();
-        showErrorMessageForm(error);
       });
   }
 };
