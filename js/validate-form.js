@@ -1,3 +1,4 @@
+import { hideErrorKey, hideSettingsKey, hideSuccessKey } from './keydown-fn.js';
 import {
   checkStringLength
 } from './util.js';
@@ -63,17 +64,6 @@ const validateContentFile = (value) => {
   return correctValues.some((ext) => (fileExtention).toLowerCase() === ext.toLowerCase());
 };
 
-const showPictureSettings = () => {
-  uploadOverlay.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-};
-
-const loadPictureHandler = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  showPictureSettings();
-};
-
 const hideSettingsHandler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -81,6 +71,19 @@ const hideSettingsHandler = () => {
   uploadForm.reset();
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
   document.querySelector('.img-upload__preview img').style = '';
+  window.removeEventListener('keydown', hideSettingsKey);
+};
+
+const showPictureSettings = () => {
+  uploadOverlay.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  window.addEventListener('keydown', hideSettingsKey);
+};
+
+const loadPictureHandler = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  showPictureSettings();
 };
 
 const blurInputHandler = (item) => {
@@ -119,15 +122,18 @@ document.body.insertAdjacentHTML('beforeend', errorMessageTemplate());
 const successWrapper = document.querySelector('.success');
 const errorWrapper = document.querySelector('.error');
 
+
 const showSucessMessageForm = () => {
   successWrapper.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  window.addEventListener('keydown', hideSuccessKey);
 };
 
 const showErrorMessageForm = (error) => {
   errorWrapper.classList.remove('hidden');
   document.body.classList.add('modal-open');
   errorMessageTemplate(error);
+  window.addEventListener('keydown', hideErrorKey);
 };
 
 const hideSuccessMessageClick = (e) => {

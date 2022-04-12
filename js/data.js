@@ -1,18 +1,8 @@
+import { showErrorMessage } from './error-http.js';
+import { initFilter } from './filter.js';
 import { renderImages } from './render.js';
 
 let arrObjData;
-
-const errorMessageTemplate = (error) => `
-  <section class="error">
-    <div class="error__inner">
-      <h2 class="error__title">${error}</h2>
-    </div>
-  </section>
-`;
-
-function showErrorMessage (error) {
-  document.body.insertAdjacentHTML('afterbegin', errorMessageTemplate(error));
-}
 
 fetch('https://25.javascript.pages.academy/kekstagram/data')
   .then((response) => {
@@ -22,6 +12,7 @@ fetch('https://25.javascript.pages.academy/kekstagram/data')
   })
   .then((users) => {
     arrObjData = users;
+    initFilter();
     renderImages(arrObjData);
   })
   .catch((error) => {
