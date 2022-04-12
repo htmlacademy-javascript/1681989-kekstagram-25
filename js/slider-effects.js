@@ -37,7 +37,7 @@ const incrementValueHandler = (value) => {
       btnMinus.removeAttribute('disabled', '');
       ++counter;
       scaleControlImg.style.transform = `scale(${counter}%)`;
-      scaleControl.setAttribute('value', `${counter}%`);
+      scaleControl.value = `${counter}%`;
     }
   };
 };
@@ -53,7 +53,7 @@ const decrementValueHandler = (value) => {
       btnPlus.removeAttribute('disabled', '');
       --counter;
       scaleControlImg.style.transform = `scale(${counter}%)`;
-      scaleControl.setAttribute('value', `${counter}%`);
+      scaleControl.value =  `${counter}%`;
     }
   };
 };
@@ -142,7 +142,7 @@ const changeEffectHandler = (e) => {
   const [...effectsRadios] = document.querySelectorAll('.effects__item input');
   const checkedRadio = effectsRadios.find((item) => item.checked);
   const effectClass = `effects__preview--${checkedRadio.value}`;
-  scaleControlImg.setAttribute('class', `img-upload__preview ${effectClass}`);
+  scaleControlImg.setAttribute('class', `${effectClass}`);
   if (e.target.classList.contains('effects__radio')) {
     initRangeSlider(checkedRadio.value);
     changeEffect(checkedRadio.value);
