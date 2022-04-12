@@ -1,5 +1,12 @@
-import { closeImgInfoHandler } from './set-info.js';
-import { hideErrorMessage, hideSettingsHandler, hideSuccessMessage } from './validate-form.js';
+import {
+  closeImgInfoHandler
+} from './set-info.js';
+
+import {
+  hideErrorMessage,
+  hideSettingsHandler,
+  hideSuccessMessage
+} from './validate-form.js';
 
 const hideSuccessKey = (e) => {
   if (e.code === 'Escape') {
