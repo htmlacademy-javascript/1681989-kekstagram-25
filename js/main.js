@@ -31,8 +31,6 @@ import {
   hideErrorMessageClick,
 } from './validate-form.js';
 
-
-// events
 uploadForm.addEventListener('change', loadPictureHandler);
 uploadInputs.forEach((item) => blurInputHandler(item));
 uploadForm.addEventListener('submit', checkValidationHandler);

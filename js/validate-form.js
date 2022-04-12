@@ -1,4 +1,10 @@
-import { hideErrorKey, hideSettingsKey, hideSuccessKey } from './keydown-fn.js';
+import {
+  hideErrorKey,
+  hideSettingsKey,
+  hideSuccessKey
+} from './keydown-fn.js';
+import { btnMinus, btnPlus } from './slider-effects.js';
+
 import {
   checkStringLength
 } from './util.js';
@@ -69,6 +75,8 @@ const hideSettingsHandler = () => {
   document.body.classList.remove('modal-open');
   uploadFile.value = '';
   uploadForm.reset();
+  btnMinus.removeAttribute('disabled');
+  btnPlus.removeAttribute('disabled');
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
   document.querySelector('.img-upload__preview img').style = '';
   window.removeEventListener('keydown', hideSettingsKey);
@@ -77,6 +85,7 @@ const hideSettingsHandler = () => {
 const showPictureSettings = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  document.querySelector('.img-upload__preview img').style = '';
   window.addEventListener('keydown', hideSettingsKey);
 };
 
@@ -99,7 +108,7 @@ pristineForm.addValidator(uploadTextArea, validateComment, 'слишком дл�
 pristineForm.addValidator(uploadFile, validateContentFile, 'выбран некорректный файл', 2, false);
 
 const successMessageTemplate = () => `
-    <section class="success hidden">
+    <section class="success hidden success--form">
       <div class="success__inner">
         <h2 class="success__title">Изображение успешно загружено</h2>
         <button type="button" class="success__button">Круто!</button>
@@ -107,10 +116,10 @@ const successMessageTemplate = () => `
     </section>
 `;
 
-const errorMessageTemplate = (error) => `
-    <section class="error hidden">
+const errorMessageTemplate = () => `
+    <section class="error hidden error--form">
       <div class="error__inner">
-        <h2 class="error__title">Ошибка загрузки файла: ${error}</h2>
+        <h2 class="error__title">Ошибка загрузки файла</h2>
         <button type="button" class="error__button">Загрузить другой файл</button>
       </div>
     </section>
@@ -119,9 +128,8 @@ const errorMessageTemplate = (error) => `
 document.body.insertAdjacentHTML('beforeend', successMessageTemplate());
 document.body.insertAdjacentHTML('beforeend', errorMessageTemplate());
 
-const successWrapper = document.querySelector('.success');
-const errorWrapper = document.querySelector('.error');
-
+const successWrapper = document.querySelector('.success--form');
+const errorWrapper = document.querySelector('.error--form');
 
 const showSucessMessageForm = () => {
   successWrapper.classList.remove('hidden');
@@ -129,10 +137,9 @@ const showSucessMessageForm = () => {
   window.addEventListener('keydown', hideSuccessKey);
 };
 
-const showErrorMessageForm = (error) => {
+const showErrorMessageForm = () => {
   errorWrapper.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  errorMessageTemplate(error);
   window.addEventListener('keydown', hideErrorKey);
 };
 
@@ -206,4 +213,3 @@ export {
   successWrapper,
   errorWrapper
 };
-

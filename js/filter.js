@@ -51,10 +51,17 @@ const filterHandler = (e) => {
   }
 };
 
+const addActiveClassHandler = (e) => {
+  if (e.target.classList.contains('img-filters__button')) {
+    addActiveClass(e.target);
+  }
+};
+
 const initFilter = () => {
   const filterElem = document.querySelector('.img-filters');
   filterElem.classList.remove('img-filters--inactive');
-  filterElem.addEventListener('click', filterHandler);
+  filterElem.addEventListener('click', debounce((e)=> filterHandler(e)));
+  filterElem.addEventListener('click', addActiveClassHandler);
 };
 
 export {
