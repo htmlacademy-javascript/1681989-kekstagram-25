@@ -1,4 +1,4 @@
-const errorMessageTemplate = () => `
+const createErrorMessageTemplate = () => `
   <section class="error hidden">
     <div class="error__inner">
       <h2 class="error__title">Ошибка загрузки</h2>
@@ -7,7 +7,7 @@ const errorMessageTemplate = () => `
 `;
 
 const initErrorMessage = () => {
-  document.body.insertAdjacentHTML('afterbegin', errorMessageTemplate());
+  document.body.insertAdjacentHTML('afterbegin', createErrorMessageTemplate());
 };
 
 initErrorMessage();
