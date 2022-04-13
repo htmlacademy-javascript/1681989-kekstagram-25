@@ -1,29 +1,29 @@
-import { arrObjData } from './data.js';
+import { dataPictures } from './data.js';
 import { renderImages } from './render.js';
 import { getUniqueIntegers } from './unique-data.js';
 
 const DELAY = 500;
 
-const filterCategories = (category) => {
+const filtCategories = (category) => {
   const categoryList = {
     'filter-random': function () {
-      const randomIndexes = getUniqueIntegers(arrObjData);
+      const randomIndexes = getUniqueIntegers(dataPictures);
       const randomPictures = [];
       for (let i = 0; i < randomIndexes.length; i++) {
-        randomPictures.push(arrObjData[randomIndexes[i]]);
+        randomPictures.push(dataPictures[randomIndexes[i]]);
       }
 
       renderImages(randomPictures);
     },
 
     'filter-discussed': function () {
-      const dataClone = arrObjData.slice(0);
-      const dataDiscussed = dataClone.sort((prev, next) => prev.comments.length - next.comments.length);
-      renderImages(dataDiscussed);
+      const clonePictures = dataPictures.slice(0);
+      const discussedPics = clonePictures.sort((prev, next) => prev.comments.length - next.comments.length);
+      renderImages(discussedPics);
     },
 
     'filter-default': function () {
-      renderImages(arrObjData);
+      renderImages(dataPictures);
     },
   };
 
@@ -44,9 +44,9 @@ const addActiveClass = (button) => {
   button.classList.add('img-filters__button--active');
 };
 
-const filterHandler = (e) => {
+const filtHandler = (e) => {
   if (e.target.classList.contains('img-filters__button')) {
-    const filterFn = filterCategories(e.target.getAttribute('id'));
+    const filterFn = filtCategories(e.target.getAttribute('id'));
     debounce(filterFn, DELAY)();
     addActiveClass(e.target);
   }
@@ -61,7 +61,7 @@ const addActiveClassHandler = (e) => {
 const initFilter = () => {
   const filterElem = document.querySelector('.img-filters');
   filterElem.classList.remove('img-filters--inactive');
-  filterElem.addEventListener('click', debounce((e)=> filterHandler(e)));
+  filterElem.addEventListener('click', debounce((e)=> filtHandler(e)));
   filterElem.addEventListener('click', addActiveClassHandler);
 };
 

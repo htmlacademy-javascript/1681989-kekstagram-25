@@ -1,5 +1,5 @@
 import {
-  arrObjData
+  dataPictures
 } from './data.js';
 
 import { closeInfoKey } from './keydown-fn.js';
@@ -26,8 +26,9 @@ const createComment = ({
 const renderComments = ({
   comments
 } = {}) => {
-  const commentsFragment = comments.reduce((acc, item) => acc + createComment(item), '');
-  pictureComments.insertAdjacentHTML('afterbegin', commentsFragment);
+  pictureComments.innerHTML = '';
+  const htmlComments = comments.reduce((acc, item) => acc + createComment(item), '');
+  pictureComments.insertAdjacentHTML('afterbegin', htmlComments);
 };
 
 const checkCommentsCount = ({
@@ -81,12 +82,12 @@ const showComments = () => {
   let counter = 5;
   return () => {
     for (let i = 0; i < 5; i++) {
-      const [...items] = document.querySelectorAll('.social__comment');
+      const [...comms] = document.querySelectorAll('.social__comment');
 
-      items[counter++].classList.remove('hidden');
+      comms[counter++].classList.remove('hidden');
       document.querySelector('.comments-shown').textContent = counter;
 
-      if (counter === items.length) {
+      if (counter === comms.length) {
         document.querySelector('.social__comments-loader').classList.add('hidden');
         counter = 5;
         return;
@@ -99,7 +100,7 @@ const onClickImgHandler = (e) => {
   if (e.target.classList.contains('picture__img')) {
     openImgInfo();
     const imgId = parseFloat(e.target.dataset.imgId);
-    const currentObj = arrObjData[imgId];
+    const currentObj = dataPictures[imgId];
     setImgSrc(currentObj);
     renderComments(currentObj);
     setInfoComments(currentObj);

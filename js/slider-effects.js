@@ -4,7 +4,7 @@ const scaleControlImg = document.querySelector('.img-upload__preview img');
 const scaleControl = document.querySelector('.scale__control--value');
 const btnMinus = document.querySelector('.scale__control--smaller');
 const btnPlus = document.querySelector('.scale__control--bigger');
-const effectsPreview = document.querySelectorAll('.effects__preview');
+const previewEffects = document.querySelectorAll('.effects__preview');
 const sliderWrapper = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const sliderInput = document.querySelector('.effect-level__value');
@@ -17,7 +17,7 @@ const loadLocalPictureHandler = (e) => {
     fileReader.onload = function () {
       const url = fileReader.result;
       scaleControlImg.src = url;
-      effectsPreview.forEach((item) => {
+      previewEffects.forEach((item) => {
         item.style.backgroundImage = `url(${url})`;
       });
     };
@@ -138,6 +138,12 @@ const initRangeSlider = (value) => {
 
 initRangeSlider('none');
 
+const resetInputValue = () => {
+  scaleControl.value = '100%';
+  btnMinus.removeAttribute('disabled', '');
+  btnPlus.removeAttribute('disabled', '');
+};
+
 const changeEffectHandler = (e) => {
   const [...effectsRadios] = document.querySelectorAll('.effects__item input');
   const checkedRadio = effectsRadios.find((item) => item.checked);
@@ -145,7 +151,9 @@ const changeEffectHandler = (e) => {
   scaleControlImg.setAttribute('class', `${effectClass}`);
   if (e.target.classList.contains('effects__radio')) {
     initRangeSlider(checkedRadio.value);
+    resetInputValue();
     changeEffect(checkedRadio.value);
+    document.querySelector('.img-upload__preview img').style = 'transform: scale(1)';
   }
 };
 

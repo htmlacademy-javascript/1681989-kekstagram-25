@@ -86,7 +86,6 @@ const showPictureSettings = () => {
   document.querySelector('.img-upload__submit').removeAttribute('disabled', '');
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.querySelector('.img-upload__preview img').style = '';
   window.addEventListener('keydown', hideSettingsKey);
 };
 
@@ -174,11 +173,6 @@ const checkValidationHandler = (e) => {
     return false;
   } else {
     const formData = new FormData(uploadForm);
-    const obj = {};
-    formData.forEach((value, key) => {
-      obj[key] = value;
-    });
-
 
     fetch('https://25.javascript.pages.academy/kekstagram', {
       method: 'POST',
