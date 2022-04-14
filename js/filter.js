@@ -4,7 +4,7 @@ import { getUniqueIntegers } from './unique-data.js';
 
 const DELAY = 500;
 
-const filtCategories = (category) => {
+const createFilterCategories = (category) => {
   const categoryList = {
     'filter-random': function () {
       const randomIndexes = getUniqueIntegers(dataPictures);
@@ -18,7 +18,7 @@ const filtCategories = (category) => {
 
     'filter-discussed': function () {
       const clonePictures = dataPictures.slice(0);
-      const discussedPics = clonePictures.sort((prev, next) => prev.comments.length - next.comments.length);
+      const discussedPics = clonePictures.sort((prev, next) => next.comments.length - prev.comments.length);
       renderImages(discussedPics);
     },
 
@@ -44,9 +44,9 @@ const addActiveClass = (button) => {
   button.classList.add('img-filters__button--active');
 };
 
-const filtHandler = (e) => {
+const filterHandler = (e) => {
   if (e.target.classList.contains('img-filters__button')) {
-    const filterFn = filtCategories(e.target.getAttribute('id'));
+    const filterFn = createFilterCategories(e.target.getAttribute('id'));
     debounce(filterFn, DELAY)();
     addActiveClass(e.target);
   }
@@ -61,7 +61,7 @@ const addActiveClassHandler = (e) => {
 const initFilter = () => {
   const filterElem = document.querySelector('.img-filters');
   filterElem.classList.remove('img-filters--inactive');
-  filterElem.addEventListener('click', debounce((e)=> filtHandler(e)));
+  filterElem.addEventListener('click', debounce((e)=> filterHandler(e)));
   filterElem.addEventListener('click', addActiveClassHandler);
 };
 
