@@ -178,6 +178,7 @@ const hideSuccessMessage = () => {
   document.body.classList.remove('modal-open');
 };
 
+
 const hideErrorMessage = () => {
   errorWrapper.classList.add('hidden');
   document.body.classList.remove('modal-open');
