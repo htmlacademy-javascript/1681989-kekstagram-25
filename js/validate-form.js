@@ -80,6 +80,11 @@ const validateContentFile = (value) => {
   return true;
 };
 
+const hideInvalidMessage = () => {
+  document.querySelector('.pristine-error').style.display = 'none';
+  document.querySelector('.pristine-error').textContent = '';
+};
+
 const hideSettingsHandler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -89,6 +94,7 @@ const hideSettingsHandler = () => {
   btnPlus.removeAttribute('disabled');
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
   document.querySelector('.img-upload__preview img').style = '';
+  hideInvalidMessage();
   window.removeEventListener('keydown', hideSettingsKey);
 };
 
@@ -184,6 +190,7 @@ const checkValidationHandler = (e) => {
     document.querySelector('.pristine-error').textContent = errorMsg;
     return false;
   } else {
+    hideInvalidMessage();
     const formData = new FormData(uploadForm);
 
     fetch('https://25.javascript.pages.academy/kekstagram', {
