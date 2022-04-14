@@ -190,9 +190,9 @@ const checkValidationHandler = (e) => {
     document.querySelector('.pristine-error').textContent = errorMsg;
     return false;
   } else {
+    document.querySelector('.img-upload__submit').setAttribute('disabled', '');
     hideInvalidMessage();
     const formData = new FormData(uploadForm);
-
     fetch('https://25.javascript.pages.academy/kekstagram', {
       method: 'POST',
       body: formData,
