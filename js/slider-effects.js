@@ -60,7 +60,14 @@ const decrementValueHandler = (value) => {
       }
       btnPlus.removeAttribute('disabled', '');
       --counter;
-      scaleControlImg.style.transform = `scale(${counter}%)`;
+
+      const scale = `scale(${parseFloat(counter / 100)}`;
+      scaleControlImg.setAttribute('style',
+        `-webkit-transform: ${scale});
+        transform: ${scale})
+        `
+      );
+
       scaleControl.value =  `${counter}%`;
     }
   };
