@@ -26,6 +26,7 @@ const loadLocalPictureHandler = (e) => {
   }
 };
 
+
 const incrementValueHandler = (value) => {
   let counter = parseFloat(value);
   return () => {
