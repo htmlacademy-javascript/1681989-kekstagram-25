@@ -19,6 +19,8 @@ const uploadCloseBtn = uploadForm.querySelector('.img-upload__cancel');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const uploadInputs = [uploadHashTags, uploadTextArea];
 
+let errorMsg;
+
 const uploadConfig = {
   classTo: 'img-upload__text',
   errorTextParent: 'img-upload__text',
@@ -37,6 +39,7 @@ const validateHashTags = (value) => {
   }
 
   if (moreThanFive || wrongValues.length) {
+    errorMsg = 'некорректный хэштэг';
     return false;
   }
 
@@ -45,6 +48,7 @@ const validateHashTags = (value) => {
 
 const validateComment = (value) => {
   if (!checkStringLength(value, 140)) {
+    errorMsg = 'слишком длинный комментарий';
     return false;
   }
 
@@ -67,7 +71,13 @@ const detectFileExtention = (value) => {
 const validateContentFile = (value) => {
   const fileExtention = detectFileExtention(value);
   const correctValues = ['svg', 'jpg', 'png', 'webp'];
-  return correctValues.some((ext) => (fileExtention).toLowerCase() === ext.toLowerCase());
+  const isCorrectFile = correctValues.some((ext) => (fileExtention).toLowerCase() === ext.toLowerCase());
+  if (!isCorrectFile) {
+    errorMsg = 'выбран некорректный файл';
+    return false;
+  }
+
+  return true;
 };
 
 const hideSettingsHandler = () => {
@@ -107,7 +117,7 @@ pristineForm.addValidator(uploadHashTags, validateHashTags, 'некоррект�
 pristineForm.addValidator(uploadTextArea, validateComment, 'слишком длинный комментарий', 2, false);
 pristineForm.addValidator(uploadFile, validateContentFile, 'выбран некорректный файл', 2, false);
 
-const successMessageTemplate = () => `
+const createSuccessMessageTemplate = () => `
     <section class="success hidden success--form">
       <div class="success__inner">
         <h2 class="success__title">Изображение успешно загружено</h2>
@@ -116,7 +126,7 @@ const successMessageTemplate = () => `
     </section>
 `;
 
-const errorMessageTemplate = () => `
+const createErrorMessageTemplate = () => `
     <section class="error hidden error--form">
       <div class="error__inner">
         <h2 class="error__title">Ошибка загрузки файла</h2>
@@ -125,8 +135,8 @@ const errorMessageTemplate = () => `
     </section>
 `;
 
-document.body.insertAdjacentHTML('beforeend', successMessageTemplate());
-document.body.insertAdjacentHTML('beforeend', errorMessageTemplate());
+document.body.insertAdjacentHTML('beforeend', createSuccessMessageTemplate());
+document.body.insertAdjacentHTML('beforeend', createErrorMessageTemplate());
 
 const successWrapper = document.querySelector('.success--form');
 const errorWrapper = document.querySelector('.error--form');
@@ -170,6 +180,8 @@ const hideErrorMessage = () => {
 const checkValidationHandler = (e) => {
   e.preventDefault();
   if (!pristineForm.validate()) {
+    document.querySelector('.pristine-error').style.display = 'block';
+    document.querySelector('.pristine-error').textContent = errorMsg;
     return false;
   } else {
     const formData = new FormData(uploadForm);

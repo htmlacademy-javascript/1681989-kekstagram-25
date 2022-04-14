@@ -42,10 +42,13 @@ const checkCommentsCount = ({
   return 5;
 };
 
+const createCountStr = (obj) => `<span class="comments-shown">
+${checkCommentsCount(obj)}</span> из ${obj.comments.length} комментариев`;
+
 const setInfoComments = (obj) => {
   const commentsCount = document.querySelector('.social__comment-count');
-  commentsCount.innerHTML = `<span class="comments-shown">
-  ${checkCommentsCount(obj)}</span> из ${obj.comments.length} комментариев`;
+  commentsCount.innerHTML = '';
+  commentsCount.insertAdjacentHTML('afterbegin', createCountStr(obj));
 };
 
 const setImgSrc = ({

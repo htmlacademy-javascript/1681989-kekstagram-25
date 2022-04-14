@@ -52,3 +52,4 @@ uploadForm.addEventListener('change', loadLocalPictureHandler);
 
 document.addEventListener('click', hideSuccessMessageClick);
 document.addEventListener('click', hideErrorMessageClick);
+
